@@ -3,215 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me — Sumeet Yadav</title>
+    <title>Sumeet Yadav — Backend Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="shared.css">
     <style>
-        .page-hero { padding: 9rem 5% 4rem; text-align: center; }
-        .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
-
-        .about-section { padding: 2rem 5% 6rem; }
-        .about-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
-
-        /* Quote banner */
-        .quote-banner {
-            padding: 3rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .quote-banner::before {
-            content: '"';
-            position: absolute;
-            top: -1rem; left: 1rem;
-            font-family: var(--font-display);
-            font-size: 10rem;
-            color: rgba(255,255,255,0.04);
-            line-height: 1;
-            pointer-events: none;
-        }
-        .quote-text {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 0.8rem;
-        }
-        .quote-author {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-
-        .big-card { padding: 2.5rem; }
-
-        .card-label {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 1.5rem;
-        }
-        .card-label-icon {
-            width: 38px; height: 38px;
-            background: rgba(255,255,255,0.07);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
-        }
-        .card-label h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
-        .card-desc { color: var(--gray); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.4rem; }
-
-        /* ── GAME LIST ── */
-        .game-list { display: flex; flex-direction: column; gap: 0.75rem; }
-
-        .game-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.8rem 1rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 12px;
-            transition: all 0.2s;
-        }
-        .game-item:hover {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.2);
-            transform: translateX(5px);
-        }
-
-        .game-left { display: flex; align-items: center; gap: 0.85rem; }
-
-        .game-logo-wrap {
-            width: 44px; height: 44px;
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .game-logo-wrap img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-
-        .game-name { font-weight: 600; font-size: 0.92rem; }
-        .game-platform { font-size: 0.72rem; color: var(--gray); margin-top: 0.1rem; }
-
-        .game-badge {
-            font-family: var(--font-mono);
-            font-size: 0.67rem;
-            padding: 0.18rem 0.55rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-            color: var(--gray);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        /* ── MUSIC ── */
-        .now-playing-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            padding: 0.6rem 0.9rem;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            margin-bottom: 0.85rem;
-        }
-        .np-dot {
-            width: 8px; height: 8px;
-            background: #ff2020;
-            border-radius: 50%;
-            flex-shrink: 0;
-            animation: pulse-red 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse-red {
-            0%,100%{ box-shadow: 0 0 4px rgba(255,32,32,0.4); }
-            50%    { box-shadow: 0 0 12px rgba(255,32,32,0.8); }
-        }
-        .np-bars { display: flex; align-items: flex-end; gap: 2px; height: 15px; }
-        .np-bar {
-            width: 3px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 2px;
-            animation: bar-dance 0.8s ease-in-out infinite alternate;
-        }
-        .np-bar:nth-child(1){ height: 55%; animation-delay:0s }
-        .np-bar:nth-child(2){ height: 100%; animation-delay:0.15s }
-        .np-bar:nth-child(3){ height: 40%; animation-delay:0.3s }
-        .np-bar:nth-child(4){ height: 75%; animation-delay:0.08s }
-        @keyframes bar-dance { from{transform:scaleY(0.3)} to{transform:scaleY(1)} }
-        .np-text { font-size: 0.8rem; color: var(--gray); }
-        .np-text strong { color: var(--white); }
-
-        .music-player-wrap {
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 16/9;
-            margin-bottom: 1rem;
-        }
-        .music-player-wrap iframe {
-            width: 100%; height: 100%;
-            border: none; display: block;
-        }
-
-        .vibe-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-        .vibe-tag {
-            padding: 0.3rem 0.75rem;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.09);
-            border-radius: 50px;
-            font-size: 0.77rem;
-            color: var(--gray);
-        }
-
-        /* Mindset */
-        .mindset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .mindset-item {
-            padding: 1.2rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px;
-        }
-        .mindset-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; }
-        .mindset-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .mindset-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
-
-        /* CTA */
-        .cta-card { padding: 3rem; text-align: center; }
-        .cta-card h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
-        .cta-card p { color: var(--gray); margin-bottom: 2rem; font-size: 1rem; line-height: 1.7; }
-        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
-        @media (max-width: 540px) { .mindset-grid { grid-template-columns: 1fr; } }
-
+        /* ── VIDEO BACKGROUND ── */
         #bgVideo {
             position: fixed;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            width: 100vw;
+            height: 100vh;
             z-index: 0;
             object-fit: cover;
-            object-position: center center;
             filter: brightness(0.75) saturate(1.4);
+            object-position: center center;
             pointer-events: none;
         }
+
+        /* Dark gradient overlay — makes it look like a shader not a video */
         #bgOverlay {
             position: fixed;
             inset: 0;
             z-index: 1;
             background:
-                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
-                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 0%,   rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0%  100%, rgba(0,5,20,0.6)  0%, transparent 60%),
+                radial-gradient(ellipse at 100% 80%, rgba(5,0,25,0.5)  0%, transparent 60%),
                 linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
             pointer-events: none;
         }
 
+        /* Subtle noise grain texture over video — kills the "video" feel */
+        #bgOverlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 5% 5rem;
+        }
+        .hero-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            font-size: 0.82rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s ease both;
+        }
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 7vw, 6.5rem);
+            font-weight: 800;
+            line-height: 0.95;
+            margin-bottom: 0.8rem;
+            animation: fadeUp 0.7s 0.1s ease both;
+        }
+        .hero-role {
+            font-family: var(--font-mono);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s 0.2s ease both;
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px; height: 1.2em;
+            background: var(--white);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--gray);
+            line-height: 1.8;
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s 0.3s ease both;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.7s 0.4s ease both;
+        }
+
+        /* Terminal */
+        .hero-visual { animation: fadeUp 0.7s 0.2s ease both; }
+        .terminal {
+            background: rgba(3,3,12,0.72);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(28px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        }
+        .terminal-bar {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .t-dot.red    { background: #ff5f57; }
+        .t-dot.yellow { background: #ffbd2e; }
+        .t-dot.green  { background: #28ca42; }
+        .terminal-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gray); margin-left: auto; }
+        .terminal-body  { padding: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; }
+        .t-line    { display: flex; align-items: baseline; gap: 0.5rem; }
+        .t-prompt  { color: rgba(255,255,255,0.2); }
+        .t-cmd     { color: var(--white); }
+        .t-key     { color: var(--gray); }
+        .t-val     { color: rgba(255,255,255,0.85); }
+        .t-green   { color: #28ca42; }
+        .t-yellow  { color: #ffbd2e; }
+        .t-blue    { color: #79b8ff; }
+        .t-comment { color: rgba(255,255,255,0.22); }
+
+        /* Stats */
+        .stats-section { padding: 1rem 5% 6rem; }
+        .stats-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+        .stat-card  { padding: 2rem; text-align: center; }
+        .stat-num   { font-family: var(--font-mono); font-size: 2.8rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .stat-label { font-size: 0.85rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* About */
+        .about-section { padding: 5rem 5%; border-top: 1px solid var(--border); }
+        .about-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+        .about-text h2 { font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.1; }
+        .about-text p  { color: var(--gray); line-height: 1.9; margin-bottom: 1.2rem; font-size: 1rem; }
+        .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+        .highlight-item { padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .highlight-icon { width: 42px; height: 42px; background: rgba(255,255,255,0.07); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .highlight-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .highlight-item p  { font-size: 0.85rem; color: var(--gray); margin: 0; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+        @media (max-width: 1024px) {
+            .hero-inner  { grid-template-columns: 1fr; gap: 2.5rem; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
+            .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-inner { grid-template-columns: 1fr 1fr; }
+            .terminal-body { font-size: 0.75rem; padding: 1rem; }
+        }
 
         /* Video loader */
         #vid-loader {
@@ -246,14 +211,21 @@
 </head>
 <body>
 
+<!-- VIDEO BG — user sees nothing, just the vibe -->
+
 <div id="vid-loader">
     <div class="vid-loader-dot"></div>
     <div class="vid-loader-dot"></div>
     <div class="vid-loader-dot"></div>
 </div>
 
-<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="bg.mp4" type="video/mp4"></video>
+<video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="bg.mp4" type="video/mp4">
+</video>
+
+<!-- Overlay to make it feel like a shader not a video -->
 <div id="bgOverlay"></div>
+
 <nav>
     <div class="nav-container">
         <a href="../index.html" class="logo">&lt;SY/&gt;</a>
@@ -270,205 +242,114 @@
 </nav>
 
 <div class="page-content">
-    <div class="page-hero">
-        <div class="section-badge">The Human Behind the Code</div>
-        <h1>About Me</h1>
-        <p class="section-description">
-            Not just a backend dev. A gamer, a lo-fi listener, and someone who builds things that actually work.
-        </p>
-    </div>
-
-    <section class="about-section">
-        <div class="about-inner">
-
-            <!-- Quote -->
-            <div class="quote-banner glass-card">
-                <div class="quote-text">Chasing the Horizon</div>
-            </div>
-
-            <!-- Gaming + Music side by side -->
-            <div class="two-col">
-
-                <!-- GAMING -->
-                <div class="big-card glass-card">
-                    <div class="card-label">
-                        <div class="card-label-icon">🎮</div>
-                        <h3>Gaming</h3>
-                    </div>
-                    <p class="card-desc">
-                        When I'm not writing Java, I'm grinding ranked or exploring open worlds.
-                        Gaming taught me strategy, patience, and clutch decision-making.
-                    </p>
-                    <div class="game-list">
-
-                        <!-- Clash of Clans -->
-                        <div class="game-item">
-                            <div class="game-left">
-                                <div class="game-logo-wrap">
-                                    <!-- COC_LOGO: replace # with your image link -->
-                                    <img src="#" alt="Clash of Clans">
-                                </div>
-                                <div>
-                                    <div class="game-name">Clash of Clans</div>
-                                    <div class="game-platform">📱 Mobile</div>
-                                </div>
-                            </div>
-                            <span class="game-badge">OG since day 1</span>
-                        </div>
-
-                        <!-- Valorant -->
-                        <div class="game-item">
-                            <div class="game-left">
-                                <div class="game-logo-wrap" style="background:#ff4655;padding:6px;">
-                                    <!-- VALORANT_LOGO: replace # with your image link -->
-                                    <img src="#" alt="Valorant">
-                                </div>
-                                <div>
-                                    <div class="game-name">Valorant</div>
-                                    <div class="game-platform">🖥️ PC</div>
-                                </div>
-                            </div>
-                            <span class="game-badge">Tactical FPS</span>
-                        </div>
-
-                        <!-- CS2 -->
-                        <div class="game-item">
-                            <div class="game-left">
-                                <div class="game-logo-wrap" style="background:#1b2838;padding:4px;">
-                                    <!-- CS2_LOGO: replace # with your image link -->
-                                    <img src="#" alt="CS2">
-                                </div>
-                                <div>
-                                    <div class="game-name">Counter-Strike 2</div>
-                                    <div class="game-platform">🖥️ PC</div>
-                                </div>
-                            </div>
-                            <span class="game-badge">The classic</span>
-                        </div>
-
-                        <!-- RDR2 -->
-                        <div class="game-item">
-                            <div class="game-left">
-                                <div class="game-logo-wrap" style="background:#1a0800;">
-                                    <!-- RDR2_LOGO: replace # with your image link -->
-                                    <img src="#" alt="Red Dead Redemption 2">
-                                </div>
-                                <div>
-                                    <div class="game-name">Red Dead Redemption 2</div>
-                                    <div class="game-platform">🖥️ PC</div>
-                                </div>
-                            </div>
-                            <span class="game-badge">Masterpiece 🤠</span>
-                        </div>
-
-                    </div>
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <i class="fas fa-circle" style="font-size:0.5rem;color:#28ca42"></i>
+                    Open to opportunities
                 </div>
-
-                <!-- MUSIC -->
-                <div class="big-card glass-card">
-                    <div class="card-label">
-                        <div class="card-label-icon">🎵</div>
-                        <h3>Music</h3>
-                    </div>
-                    <p class="card-desc">
-                        Lo-fi is my coding fuel. Those mellow beats lock me into flow state — perfect for
-                        deep work, late-night builds, or just vibing between commits.
-                    </p>
-
-                    <div class="now-playing-bar">
-                        <div class="np-dot"></div>
-                        <div class="np-bars">
-                            <div class="np-bar"></div>
-                            <div class="np-bar"></div>
-                            <div class="np-bar"></div>
-                            <div class="np-bar"></div>
-                        </div>
-                        <div class="np-text"><strong>What I code to</strong> · hit play 👇</div>
-                    </div>
-
-                    <!-- Embedded YouTube video -->
-                    <div class="music-player-wrap">
-                        <iframe
-                                src="https://www.youtube.com/embed/_9bw_VtMUGA?rel=0&modestbranding=1&color=white&iv_load_policy=3"
-                                title="Lo-fi music — Sumeet's coding playlist"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-
-                    <div class="vibe-tags">
-                        <span class="vibe-tag">☁️ Chill lo-fi</span>
-                        <span class="vibe-tag">🎹 Study beats</span>
-                        <span class="vibe-tag">🌧️ Rainy day vibes</span>
-                        <span class="vibe-tag">🌙 Late night coding</span>
-                        <span class="vibe-tag">🍵 Coffee &amp; keys</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Dev Mindset -->
-            <div class="big-card glass-card">
-                <div class="card-label">
-                    <div class="card-label-icon">🧠</div>
-                    <h3>How I Think &amp; Work</h3>
-                </div>
-                <div class="mindset-grid">
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">🏗️</div>
-                        <h4>Architecture First</h4>
-                        <p>I think about how things scale before writing a single line. Bad architecture is a debt that always comes due.</p>
-                    </div>
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">🔐</div>
-                        <h4>Security Isn't Optional</h4>
-                        <p>JWT, Spring Security, rate limiting — I treat these as requirements, not nice-to-haves.</p>
-                    </div>
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">🚀</div>
-                        <h4>Ship It</h4>
-                        <p>Perfection is the enemy of done. I build, deploy, learn, and iterate. Real users > local demos.</p>
-                    </div>
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">☕</div>
-                        <h4>Caffeine Powered</h4>
-                        <p>Coffee, lo-fi, and a dark IDE. That's the setup. Some of my best code was written past midnight.</p>
-                    </div>
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">📚</div>
-                        <h4>Always Learning</h4>
-                        <p>Every Forage sim, every side project, every bug is a lesson. Stagnation is not an option.</p>
-                    </div>
-                    <div class="mindset-item">
-                        <div class="mindset-emoji">🎯</div>
-                        <h4>Horizon Chaser</h4>
-                        <p>There's always a next goal. More complex systems, better code, bigger impact. Keep moving forward.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CTA -->
-            <div class="cta-card glass-card">
-                <h2>Let's Build Something</h2>
-                <p>
-                    Now you know the person behind the code. Backend dev by day, gamer by night,
-                    lo-fi listener always. If you're looking for someone who takes their craft seriously
-                    and actually ships — I'm your guy.
+                <h1 class="hero-name">Sumeet<br>Yadav</h1>
+                <p class="hero-role">Backend Developer<span class="cursor"></span></p>
+                <p class="hero-desc">
+                    Building production-ready REST APIs with Spring Boot and AWS.
+                    Experienced in JWT authentication, event-driven microservices,
+                    and cloud-native architectures that actually solve real-world problems.
                 </p>
-                <div class="cta-buttons">
-                    <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> Get In Touch</a>
-                    <a href="projects.html" class="btn btn-secondary"><i class="fas fa-folder-open"></i> See My Work</a>
+                <div class="hero-buttons">
+                    <a href="projects.html" class="btn btn-primary"><i class="fas fa-rocket"></i> View Projects</a>
+                    <a href="contact.html"  class="btn btn-secondary"><i class="fas fa-envelope"></i> Get In Touch</a>
                 </div>
             </div>
 
+            <div class="hero-visual">
+                <div class="terminal">
+                    <div class="terminal-bar">
+                        <div class="t-dot red"></div>
+                        <div class="t-dot yellow"></div>
+                        <div class="t-dot green"></div>
+                        <span class="terminal-title">sumeet.json</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">cat sumeet.json</span></div>
+                        <div style="margin-top:0.5rem">
+                            <div class="t-line"><span class="t-comment">{</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"name"</span><span class="t-prompt">:</span> <span class="t-val">"Sumeet Yadav"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"role"</span><span class="t-prompt">:</span> <span class="t-val">"Backend Developer"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"location"</span><span class="t-prompt">:</span> <span class="t-val">"Mumbai, India 🇮🇳"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"stack"</span><span class="t-prompt">:</span> <span class="t-blue">["Java", "Spring", "AWS"]</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"projects"</span><span class="t-prompt">:</span> <span class="t-yellow">3</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"simulations"</span><span class="t-prompt">:</span> <span class="t-yellow">5</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"caffeine"</span><span class="t-prompt">:</span> <span class="t-green">"critical"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"available"</span><span class="t-prompt">:</span> <span class="t-green">true</span></div>
+                            <div class="t-line"><span class="t-comment">}</span></div>
+                        </div>
+                        <div class="t-line" style="margin-top:0.8rem"><span class="t-green">✓</span> <span class="t-comment">Ready to ship.</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion &amp; ☕</p></footer>
+    <section class="stats-section">
+        <div class="stats-inner">
+            <div class="stat-card glass-card"><div class="stat-num">3+</div><div class="stat-label">Projects Shipped</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">5</div><div class="stat-label">Job Simulations</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">15+</div><div class="stat-label">Technologies</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">∞</div><div class="stat-label">Cups of Coffee</div></div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-inner">
+            <div class="about-text">
+                <div class="section-badge">Who I Am</div>
+                <h2>Backend dev who<br>actually ships stuff</h2>
+                <p>I'm a self-driven backend developer based in Mumbai, building scalable APIs and cloud-native systems. I obsess over clean architecture, proper security, and code that doesn't break at 2am.</p>
+                <p>Right now I'm deep into microservices, AWS infrastructure, and always learning what's next. When I'm not coding, I'm gaming or vibing to ambient beats.</p>
+                <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+                    <a href="projects.html" class="btn btn-primary"  style="font-size:0.9rem;padding:0.7rem 1.4rem"><i class="fas fa-folder-open"></i> My Work</a>
+                    <a href="about.html"    class="btn btn-secondary" style="font-size:0.9rem;padding:0.7rem 1.4rem"><i class="fas fa-user"></i> More About Me</a>
+                </div>
+            </div>
+            <div class="about-highlights">
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-server"></i></div>
+                    <div><h4>Backend Architecture</h4><p>Spring Boot microservices, REST APIs, JWT auth — built for scale.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-cloud"></i></div>
+                    <div><h4>Cloud & DevOps</h4><p>AWS, Docker, Terraform, CI/CD pipelines that actually work.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-database"></i></div>
+                    <div><h4>Data Layer</h4><p>MySQL, Spring Data JPA, schema design for real-world workloads.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div><h4>Security First</h4><p>Spring Security, OAuth2, rate limiting — not an afterthought.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion & ☕</p></footer>
 </div>
 
 <div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+
 <script src="shared.js"></script>
+<script>
+    // Override universe canvas — no Three.js needed, video handles the bg
+    // Just keep nav + scroll top
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === 'home.html') a.classList.add('active');
+    });
+
+    // Prevent right click on video — extra stealth
+    document.getElementById('bgVideo').addEventListener('contextmenu', e => e.preventDefault());
+</script>
 
 <script>
     (function() {
