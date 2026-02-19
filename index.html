@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumeet Yadav</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --white: #ffffff;
+            --gray: #666;
+            --border: rgba(255,255,255,0.12);
+        }
+
+        html, body {
+            width: 100%; height: 100%;
+            background: #000;
+            color: var(--white);
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
+
+        /* ── CANVAS ── */
+        #bg { position: fixed; inset: 0; z-index: 0; }
+
+        /* ── MAIN LAYOUT ── */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%; height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 2rem;
+        }
+
+        /* ── LOGO ── */
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease both;
+        }
+
+        /* ── NAME ── */
+        .name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 0.8s 0.1s ease both;
+        }
+
+        .role {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeIn 0.8s 0.2s ease both;
+        }
+
+        /* ── QUESTION ── */
+        .question {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.8s 0.35s ease both;
+        }
+
+        /* ── CHOICE CARDS ── */
+        .choices {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeIn 0.8s 0.45s ease both;
+        }
+
+        .choice {
+            position: relative;
+            width: 200px;
+            padding: 2rem 1.5rem;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .choice::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0);
+            transition: background 0.3s;
+        }
+
+        .choice:hover {
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-6px);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .choice:hover::before {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Scan line animation on hover */
+        .choice::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: top 0s;
+        }
+
+        .choice:hover::after {
+            animation: scan 0.6s ease forwards;
+        }
+
+        @keyframes scan {
+            from { top: -2px; }
+            to   { top: 100%; }
+        }
+
+        .choice-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .choice-label {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .choice-desc {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+
+        .choice-arrow {
+            position: absolute;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .choice:hover .choice-arrow {
+            color: rgba(255,255,255,0.7);
+            transform: translate(3px, -3px);
+        }
+
+        /* Recommended tag */
+        .rec-tag {
+            position: absolute;
+            top: 0.7rem;
+            right: 0.7rem;
+            font-size: 0.55rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.2rem 0.5rem;
+        }
+
+        /* ── BOTTOM NOTE ── */
+        .bottom-note {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.18);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            animation: fadeIn 1s 0.8s ease both;
+        }
+
+        /* ── TRANSITION OVERLAY ── */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── MOBILE responsive ── */
+        @media (max-width: 480px) {
+            .choices { flex-direction: column; gap: 1rem; }
+            .choice { width: 100%; max-width: 300px; flex-direction: row; align-items: center; padding: 1.2rem 1.5rem; gap: 1rem; }
+            .choice-icon { font-size: 1.5rem; }
+            .choice-label { font-size: 1.1rem; }
+            .choice-desc { display: none; }
+            .choice-arrow { position: static; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="wrapper">
+    <div class="logo">&lt;SY/&gt;</div>
+
+    <div class="name">Sumeet Yadav</div>
+    <div class="role">Backend Developer · Mumbai, India</div>
+
+    <div class="question">How are you viewing this?</div>
+
+    <div class="choices">
+        <!-- MOBILE -->
+        <a href="./phone-portfolio/home.html" class="choice" id="mobileChoice">
+            <div class="choice-icon">📱</div>
+            <div class="choice-label">Mobile</div>
+            <div class="choice-desc">Lightweight experience<br>optimized for touch</div>
+            <span class="choice-arrow">↗</span>
+        </a>
+
+        <!-- DESKTOP -->
+        <a href="./pc-portfolio/home.html" class="choice" id="desktopChoice">
+            <div class="rec-tag">Recommended</div>
+            <div class="choice-icon">🖥️</div>
+            <div class="choice-label">Desktop</div>
+            <div class="choice-desc">Full experience with<br>3D visuals & animations</div>
+            <span class="choice-arrow">↗</span>
+        </a>
+    </div>
+</div>
+
+<div class="bottom-note">Sumeet Yadav · Portfolio 2026</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- Minimal star bg — very lightweight, no Three.js needed here -->
+<script>
+    (function() {
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        let W, H, stars = [];
+
+        function resize() {
+            W = canvas.width  = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+
+        function init() {
+            stars = [];
+            const count = Math.floor((W * H) / 6000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    r: Math.random() * 1.2 + 0.2,
+                    o: Math.random() * 0.6 + 0.1,
+                    speed: Math.random() * 0.15 + 0.02
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${s.o})`;
+                ctx.fill();
+                // drift upward slowly
+                s.y -= s.speed;
+                if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+            });
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        init();
+        draw();
+        window.addEventListener('resize', () => { resize(); init(); });
+    })();
+
+    // ── CLICK WITH TRANSITION ──
+    function navigate(href) {
+        const overlay = document.getElementById('overlay');
+        overlay.classList.add('active');
+        setTimeout(() => { window.location.href = href; }, 400);
+    }
+
+    // Auto-detect and highlight the likely correct choice
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if (isMobile) {
+        document.getElementById('mobileChoice').style.borderColor = 'rgba(255,255,255,0.35)';
+        document.getElementById('mobileChoice').style.background  = 'rgba(255,255,255,0.04)';
+    } else {
+        document.getElementById('desktopChoice').style.borderColor = 'rgba(255,255,255,0.35)';
+        document.getElementById('desktopChoice').style.background  = 'rgba(255,255,255,0.04)';
+    }
+
+    // Intercept clicks for smooth transition
+    document.querySelectorAll('.choice').forEach(el => {
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            navigate(this.getAttribute('href'));
+        });
+    });
+</script>
+</body>
+</html>
