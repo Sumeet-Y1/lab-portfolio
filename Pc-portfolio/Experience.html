@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience - Sumeet Yadav</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: 9rem 5% 4rem; text-align: center; }
+        .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+
+        .exp-section { padding: 2rem 5% 6rem; }
+        .exp-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.8rem; }
+
+        .exp-card { padding: 2rem 2.5rem; position: relative; overflow: hidden; }
+
+        .exp-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .exp-card:hover::before { opacity: 1; }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            gap: 1.5rem;
+        }
+
+        .exp-company { display: flex; align-items: center; gap: 1rem; }
+
+        .company-logo {
+            width: 54px; height: 54px;
+            background: #fff;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 8px;
+            flex-shrink: 0;
+        }
+        .company-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+        .exp-info h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .exp-role { color: var(--gray); font-size: 0.9rem; }
+
+        .exp-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--gray);
+            white-space: nowrap;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 0.2rem;
+        }
+
+        .exp-body { }
+        .exp-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+        .exp-body li {
+            color: var(--gray);
+            font-size: 0.93rem;
+            line-height: 1.7;
+            padding-left: 1.4rem;
+            position: relative;
+        }
+        .exp-body li::before { content: '▹'; position: absolute; left: 0; color: rgba(255,255,255,0.4); }
+
+        .exp-footer { margin-top: 1.5rem; }
+
+        .cert-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .cert-link:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+        @media (max-width: 640px) {
+            .exp-header { flex-direction: column; }
+            .exp-date { align-self: flex-start; }
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.75) saturate(1.4);
+            pointer-events: none;
+        }
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="../bg.mp4" type="video/mp4"></video>
+<div id="bgOverlay"></div>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="page-hero">
+        <div class="section-badge">Virtual Experiences</div>
+        <h1>Job Simulations</h1>
+        <p class="section-description">
+            Hands-on experience through industry-leading virtual job simulations on the Forage platform.
+        </p>
+    </div>
+
+    <section class="exp-section">
+        <div class="exp-inner">
+
+            <!-- JPMorgan -->
+            <div class="exp-card glass-card">
+                <div class="exp-header">
+                    <div class="exp-company">
+                        <div class="company-logo">
+                            <img src="https://media.designrush.com/inspiration_images/757008/conversions/JPMorgan-Chase-Logo-SVG-desktop.jpg" alt="JPMorgan Chase">
+                        </div>
+                        <div class="exp-info">
+                            <h3>JPMorgan Chase</h3>
+                            <p class="exp-role">Software Engineering Job Simulation</p>
+                        </div>
+                    </div>
+                    <span class="exp-date">January 2026</span>
+                </div>
+                <div class="exp-body">
+                    <ul>
+                        <li>Integrated Kafka into a Spring Boot microservice to consume and deserialize high-volume transaction messages using a configurable topic and embedded Kafka test framework.</li>
+                        <li>Implemented transaction validation and persistence logic with Spring Data JPA and an H2 SQL database, including entity modeling and balance updates across relational User records.</li>
+                        <li>Connected the service to an external REST Incentive API using RestTemplate, processing incentive responses and incorporating them into transactional workflows.</li>
+                        <li>Developed a REST endpoint for querying user balances, returning JSON responses through a Spring controller while maintaining clean architectural boundaries.</li>
+                        <li>Verified system behavior using Maven test suites and debugger-driven inspection, ensuring reliability across message ingestion, database operations, and external API interactions.</li>
+                    </ul>
+                </div>
+                <div class="exp-footer">
+                    <a href="https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_68cb08cb0b0b9899833e6350_1769868873310_completion_certificate.pdf" class="cert-link" target="_blank">
+                        <i class="fas fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+
+            <!-- AWS -->
+            <div class="exp-card glass-card">
+                <div class="exp-header">
+                    <div class="exp-company">
+                        <div class="company-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS">
+                        </div>
+                        <div class="exp-info">
+                            <h3>Amazon Web Services (AWS)</h3>
+                            <p class="exp-role">APAC Solutions Architecture Virtual Experience</p>
+                        </div>
+                    </div>
+                    <span class="exp-date">February 2026</span>
+                </div>
+                <div class="exp-body">
+                    <ul>
+                        <li>Designed a simple and scalable hosting architecture based on Elastic Beanstalk for a client experiencing significant growth and slow response times.</li>
+                        <li>Described the proposed architecture in plain language ensuring the client understood how it works and how costs are calculated.</li>
+                    </ul>
+                </div>
+                <div class="exp-footer">
+                    <a href="https://www.theforage.com/completion-certificates/pmnMSL4QiQ9JCgE3W/kkE9HyeNcw6rwCRGw_pmnMSL4QiQ9JCgE3W_68cb08cb0b0b9899833e6350_1769915156093_completion_certificate.pdf" class="cert-link" target="_blank">
+                        <i class="fas fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+
+            <!-- Walmart -->
+            <div class="exp-card glass-card">
+                <div class="exp-header">
+                    <div class="exp-company">
+                        <div class="company-logo">
+                            <img src="https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-65acd11ba70c8_walmart_.jpeg?d=200x200" alt="Walmart">
+                        </div>
+                        <div class="exp-info">
+                            <h3>Walmart Global Tech USA</h3>
+                            <p class="exp-role">Advanced Software Engineering Virtual Experience</p>
+                        </div>
+                    </div>
+                    <span class="exp-date">February 2026</span>
+                </div>
+                <div class="exp-body">
+                    <ul>
+                        <li>Completed the Advanced Software Engineering Job Simulation solving difficult technical projects for a variety of teams at Walmart.</li>
+                        <li>Developed a novel version of a heap data structure in Java for Walmart's shipping department, showcasing strong problem-solving and algorithmic skills.</li>
+                        <li>Designed a UML class diagram for a data processor, considering different operating modes and database connections.</li>
+                        <li>Created an entity relationship diagram to design a new database accounting for all requirements provided by Walmart's pet department.</li>
+                    </ul>
+                </div>
+                <div class="exp-footer">
+                    <a href="https://www.theforage.com/completion-certificates/prBZoAihniNijyD6d/oX6f9BbCL9kJDJzfg_prBZoAihniNijyD6d_68cb08cb0b0b9899833e6350_1770963809787_completion_certificate.pdf" class="cert-link" target="_blank">
+                        <i class="fas fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+
+            <!-- Datacom -->
+            <div class="exp-card glass-card">
+                <div class="exp-header">
+                    <div class="exp-company">
+                        <div class="company-logo">
+                            <img src="https://imgs.search.brave.com/-ysJTEui7lX7ldd4GzRLkSKvh7tdfgT6U6u_5HByxLs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zZWVr/dmVjdG9ycy5jb20v/c3RvcmFnZS9pbWFn/ZXMvNmIzNWZiODAw/OTgzYjkxOWFhOTJm/YWVjOWQyODFkOWEu/c3Zn" alt="Datacom">
+                        </div>
+                        <div class="exp-info">
+                            <h3>Datacom</h3>
+                            <p class="exp-role">Introduction to Cloud Job Simulation</p>
+                        </div>
+                    </div>
+                    <span class="exp-date">February 2026</span>
+                </div>
+                <div class="exp-body">
+                    <ul>
+                        <li>Completed a simulation focused on understanding the DevOps engineering role at Datacom.</li>
+                        <li>Registered an application on the cloud for a hypothetical client, WCD Bank.</li>
+                        <li>Created a GitHub Actions workflow for automated deployment pipelines.</li>
+                    </ul>
+                </div>
+                <div class="exp-footer">
+                    <a href="https://www.theforage.com/completion-certificates/gCW7Xki5Y3vNpBmnn/qsuRRyXDZ7Dj2QFx4_gCW7Xki5Y3vNpBmnn_68cb08cb0b0b9899833e6350_1770352089987_completion_certificate.pdf" class="cert-link" target="_blank">
+                        <i class="fas fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+
+            <!-- Electronic Arts -->
+            <div class="exp-card glass-card">
+                <div class="exp-header">
+                    <div class="exp-company">
+                        <div class="company-logo">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Electronic-Arts-Logo.svg" alt="Electronic Arts">
+                        </div>
+                        <div class="exp-info">
+                            <h3>Electronic Arts</h3>
+                            <p class="exp-role">Product Management Job Simulation</p>
+                        </div>
+                    </div>
+                    <span class="exp-date">February 2026</span>
+                </div>
+                <div class="exp-body">
+                    <ul>
+                        <li>Developed a solid understanding of different KPIs, and selected the most appropriate KPIs for measuring and assessing specific business problems related to a strategy RPG mobile game.</li>
+                        <li>Demonstrated knowledge of key performance indicators within the video game industry.</li>
+                        <li>Broke down tasks for creating a data-driven video game presentation.</li>
+                    </ul>
+                </div>
+                <div class="exp-footer">
+                    <a href="https://www.theforage.com/completion-certificates/j43dGscQHtJJ57N54/5genWYpfo5b57G7yv_j43dGscQHtJJ57N54_68cb08cb0b0b9899833e6350_1769936642285_completion_certificate.pdf" class="cert-link" target="_blank">
+                        <i class="fas fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion & ☕</p></footer>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+<script src="shared.js"></script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Sumeet Yadav</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* Override shared.css body for this page */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .page-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 6rem 2rem 3rem;
+        }
+
+        /* ── GRID FRAME ── */
+        .grid-frame {
+            width: 100%;
+            max-width: 1300px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.25);
+            gap: 1px;
+            animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .cell {
+            background: #000;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ── TOP BAR ── */
+        .cell-topbar {
+            grid-column: span 4;
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 56px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+        .back-btn:hover { color: #fff; }
+
+        .avail-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.05em;
+        }
+
+        .avail-dot {
+            width: 7px; height: 7px;
+            background: #28ca42;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(40,202,66,0.7);
+            animation: pulse-g 2s ease-in-out infinite;
+        }
+        @keyframes pulse-g {
+            0%,100% { box-shadow: 0 0 5px rgba(40,202,66,0.5); }
+            50%      { box-shadow: 0 0 12px rgba(40,202,66,0.9); }
+        }
+
+        /* ── HERO TITLE ── */
+        .cell-title {
+            grid-column: span 4;
+            padding: 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+        }
+
+        .big-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(3rem, 10vw, 9rem);
+            text-transform: uppercase;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            text-align: center;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* ── CONTACT CARDS ── */
+        .cell-contact {
+            grid-column: span 1;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+
+        .cell-contact:hover { background: rgba(255,255,255,0.03); }
+
+        .cell-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 1.5rem;
+        }
+
+        .cell-icon {
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.8rem;
+        }
+
+        .cell-main {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            transition: opacity 0.2s;
+            word-break: break-all;
+        }
+        .cell-main:hover { opacity: 0.7; }
+
+        .cell-sub {
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.5;
+            margin-top: auto;
+            padding-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ── BOTTOM LEFT: SOCIALS ── */
+        .cell-socials {
+            grid-column: span 2;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cell-section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .social-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .social-link:hover { opacity: 0.6; transform: translateX(4px); }
+
+        .social-link span {
+            color: rgba(255,255,255,0.35);
+            font-weight: 400;
+        }
+
+        /* ── BOTTOM RIGHT: TAGLINE ── */
+        .cell-tagline {
+            grid-column: span 2;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tagline-top {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .tagline-main {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            line-height: 1.15;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .grid-frame { grid-template-columns: repeat(2, 1fr); }
+            .cell-topbar, .cell-title { grid-column: span 2; }
+            .cell-contact { grid-column: span 1; }
+            .cell-socials, .cell-tagline { grid-column: span 2; }
+        }
+
+        @media (max-width: 540px) {
+            .grid-frame { grid-template-columns: 1fr; }
+            .cell-topbar, .cell-title, .cell-contact,
+            .cell-socials, .cell-tagline { grid-column: span 1; }
+            .big-title { font-size: 15vw; }
+            .page-content { padding: 5rem 1rem 2rem; }
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.75) saturate(1.4);
+            pointer-events: none;
+        }
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+
+        /* ── MOBILE RESPONSIVE (phone-portfolio only) ── */
+        :root { --bottom-nav-h: 64px; }
+
+        body { padding-bottom: var(--bottom-nav-h); }
+
+        /* Hide top nav on mobile */
+        nav:not(.bottom-nav) { display: none !important; }
+
+        /* Bottom nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--bottom-nav-h);
+            background: rgba(5,5,15,0.92);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding: 0 0.5rem;
+        }
+        .nav-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.2rem;
+            padding: 0.5rem 0.8rem;
+            text-decoration: none;
+            color: rgba(255,255,255,0.35);
+            transition: color 0.2s;
+            border-radius: 12px; min-width: 48px;
+        }
+        .nav-item.active { color: #fff; }
+        .nav-item i { font-size: 1.1rem; }
+        .nav-item span { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+        /* Stack all grids to single column */
+        @media (max-width: 768px) {
+            .hero { padding: 5rem 5% 3rem !important; }
+            .hero-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .hero-name { font-size: clamp(3rem, 15vw, 5rem) !important; }
+            .hero-buttons { flex-direction: column !important; }
+            .hero-buttons .btn { width: 100%; justify-content: center; }
+
+            .stats-inner { grid-template-columns: 1fr 1fr !important; gap: 0.8rem !important; }
+            .stat-num { font-size: 2rem !important; }
+
+            .about-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .about-text h2 { font-size: 2rem !important; }
+
+            /* Skills */
+            .skills-grid { grid-template-columns: 1fr !important; }
+            .skills-inner { grid-template-columns: 1fr !important; }
+
+            /* Experience */
+            .exp-grid { grid-template-columns: 1fr !important; }
+            .exp-inner { grid-template-columns: 1fr !important; }
+            .timeline { grid-template-columns: 1fr !important; }
+
+            /* Projects */
+            .projects-grid { grid-template-columns: 1fr !important; }
+            .proj-grid { grid-template-columns: 1fr !important; }
+
+            /* About */
+            .about-grid { grid-template-columns: 1fr !important; }
+            .games-grid { grid-template-columns: 1fr 1fr !important; }
+
+            /* Contact */
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .contact-cards { grid-template-columns: 1fr !important; }
+
+            /* General */
+            .section-badge { font-size: 0.7rem; }
+            .terminal-body { font-size: 0.75rem !important; padding: 1rem !important; }
+            .page-content { padding-top: 0; }
+
+            /* Video */
+            #bgVideo { object-position: center center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="phonebg.mp4" type="video/mp4"></video>
+<div id="bgOverlay"></div>
+
+<!-- NAV from shared -->
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="grid-frame">
+
+        <!-- TOP BAR -->
+        <div class="cell cell-topbar">
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                BACK
+            </a>
+            <div class="avail-pill">
+                <div class="avail-dot"></div>
+                AVAILABLE FOR OPPORTUNITIES
+            </div>
+        </div>
+
+        <!-- BIG TITLE -->
+        <div class="cell cell-title">
+            <h1 class="big-title">Let's Connect</h1>
+        </div>
+
+        <!-- EMAIL CARD -->
+        <div class="cell cell-contact">
+            <div class="cell-label-row">
+                <span>Email</span>
+                <span>&rarr;</span>
+            </div>
+            <div class="cell-icon"><i class="fas fa-envelope"></i></div>
+            <a href="mailto:sumeety202@gmail.com" class="cell-main">sumeety202@gmail.com</a>
+            <p class="cell-sub">Primary channel for professional inquiries.</p>
+        </div>
+
+        <!-- LINKEDIN CARD -->
+        <div class="cell cell-contact">
+            <div class="cell-label-row">
+                <span>LinkedIn</span>
+                <span>&rarr;</span>
+            </div>
+            <div class="cell-icon"><i class="fab fa-linkedin-in"></i></div>
+            <a href="https://linkedin.com/in/sumeet-backenddev" target="_blank" class="cell-main">sumeet-backenddev</a>
+            <p class="cell-sub">Connect for professional networking.</p>
+        </div>
+
+        <!-- GITHUB CARD -->
+        <div class="cell cell-contact">
+            <div class="cell-label-row">
+                <span>GitHub</span>
+                <span>&rarr;</span>
+            </div>
+            <div class="cell-icon"><i class="fab fa-github"></i></div>
+            <a href="https://github.com/Sumeet-Y1" target="_blank" class="cell-main">Sumeet-Y1</a>
+            <p class="cell-sub">Browse my projects and open source work.</p>
+        </div>
+
+        <!-- LOCATION CARD -->
+        <div class="cell cell-contact">
+            <div class="cell-label-row">
+                <span>Location</span>
+                <span>&rarr;</span>
+            </div>
+            <div class="cell-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <p class="cell-main" style="cursor:default;">Mumbai, India 🇮🇳</p>
+            <p class="cell-sub">Maharashtra · Open to remote roles worldwide.</p>
+        </div>
+
+        <!-- SOCIALS -->
+        <div class="cell cell-socials">
+            <span class="cell-section-label">Socials</span>
+            <div class="social-list">
+                <a href="https://linkedin.com/in/sumeet-backenddev" target="_blank" class="social-link">
+                    LINKEDIN <span>/ sumeet-backenddev</span>
+                </a>
+                <a href="https://github.com/Sumeet-Y1" target="_blank" class="social-link">
+                    GITHUB <span>/ Sumeet-Y1</span>
+                </a>
+                <a href="https://x.com/hustlehard_qt" target="_blank" class="social-link">
+                    X (TWITTER) <span>@hustlehard_qt</span>
+                </a>
+                <a href="mailto:sumeety202@gmail.com" class="social-link">
+                    EMAIL <span>sumeety202@gmail.com</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- TAGLINE -->
+        <div class="cell cell-tagline">
+            <div class="tagline-top">2026 · Backend Developer</div>
+            <div class="tagline-main">
+                Building systems<br>
+                that actually<br>
+                ship.
+            </div>
+            <div class="tagline-footer">
+                <span>Mumbai · India</span>
+                <span>Spring Boot · AWS · Docker</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+<script src="shared.js"></script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+    <a href="home.html"       class="nav-item"><i class="fas fa-house"></i><span>Home</span></a>
+    <a href="skills.html"     class="nav-item"><i class="fas fa-code"></i><span>Skills</span></a>
+    <a href="experience.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Exp</span></a>
+    <a href="projects.html"   class="nav-item"><i class="fas fa-rocket"></i><span>Projects</span></a>
+    <a href="about.html"      class="nav-item"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="contact.html"    class="nav-item"><i class="fas fa-envelope"></i><span>Contact</span></a>
+</nav>
+
+<script>
+    // Active bottom nav
+    (function() {
+        const page = location.pathname.split('/').pop() || 'home.html';
+        document.querySelectorAll('.nav-item').forEach(a => {
+            if (a.getAttribute('href') === page) a.classList.add('active');
+        });
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Sumeet Yadav</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: 9rem 5% 4rem; text-align: center; }
+        .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+
+        .projects-section { padding: 2rem 5% 6rem; }
+        .projects-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+
+        .proj-card { padding: 2.5rem; }
+
+        .proj-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .proj-title { font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1; }
+
+        .proj-date { color: var(--gray); font-size: 0.85rem; margin-top: 0.3rem; }
+
+        .proj-icon {
+            width: 56px; height: 56px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .proj-desc {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.97rem;
+        }
+
+        .proj-tech { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+
+        .proj-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+        .proj-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.65rem 1.3rem;
+            background: var(--white);
+            color: #000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+        .proj-link:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); }
+        .proj-link.outline {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+        .proj-link.outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+
+        /* Under Construction */
+        .proj-card.uc {
+            border-color: rgba(255,255,255,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proj-card.uc::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.015) 20px, rgba(255,255,255,0.015) 40px);
+            animation: move-stripes 30s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .proj-card.uc > * { position: relative; z-index: 1; }
+
+        @keyframes move-stripes { 0%{transform:translate(0,0)} 100%{transform:translate(80px,80px)} }
+
+        .uc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.85rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            animation: pulse-badge 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge { 0%,100%{box-shadow:0 0 8px rgba(255,255,255,0.15)} 50%{box-shadow:0 0 18px rgba(255,255,255,0.25)} }
+
+        .hammer-icon { animation: hammer 1.5s ease-in-out infinite; display: inline-block; transform-origin: bottom right; }
+        @keyframes hammer { 0%,100%{transform:rotate(0)} 10%{transform:rotate(-25deg)} 20%{transform:rotate(10deg)} 30%{transform:rotate(-15deg)} 40%{transform:rotate(5deg)} 50%{transform:rotate(0)} }
+
+        .progress-wrap { margin: 1rem 0 0.4rem; }
+        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
+        .progress-fill {
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.5), rgba(255,255,255,0.8));
+            border-radius: 10px;
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+        @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--gray); margin-top: 0.3rem; }
+        .progress-pct { color: var(--white); font-family: var(--font-mono); font-weight: 700; }
+
+        .launch-note { font-size: 0.82rem; color: var(--gray); font-style: italic; margin: 0.8rem 0 1.2rem; }
+        .rocket-float { display: inline-block; animation: rfloat 2s ease-in-out infinite; }
+        @keyframes rfloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+        @media (max-width: 640px) {
+            .proj-header { flex-direction: column; }
+            .proj-icon { display: none; }
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.75) saturate(1.4);
+            pointer-events: none;
+        }
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+
+        /* ── MOBILE RESPONSIVE (phone-portfolio only) ── */
+        :root { --bottom-nav-h: 64px; }
+
+        body { padding-bottom: var(--bottom-nav-h); }
+
+        /* Hide top nav on mobile */
+        nav:not(.bottom-nav) { display: none !important; }
+
+        /* Bottom nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--bottom-nav-h);
+            background: rgba(5,5,15,0.92);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding: 0 0.5rem;
+        }
+        .nav-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.2rem;
+            padding: 0.5rem 0.8rem;
+            text-decoration: none;
+            color: rgba(255,255,255,0.35);
+            transition: color 0.2s;
+            border-radius: 12px; min-width: 48px;
+        }
+        .nav-item.active { color: #fff; }
+        .nav-item i { font-size: 1.1rem; }
+        .nav-item span { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+        /* Stack all grids to single column */
+        @media (max-width: 768px) {
+            .hero { padding: 5rem 5% 3rem !important; }
+            .hero-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .hero-name { font-size: clamp(3rem, 15vw, 5rem) !important; }
+            .hero-buttons { flex-direction: column !important; }
+            .hero-buttons .btn { width: 100%; justify-content: center; }
+
+            .stats-inner { grid-template-columns: 1fr 1fr !important; gap: 0.8rem !important; }
+            .stat-num { font-size: 2rem !important; }
+
+            .about-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .about-text h2 { font-size: 2rem !important; }
+
+            /* Skills */
+            .skills-grid { grid-template-columns: 1fr !important; }
+            .skills-inner { grid-template-columns: 1fr !important; }
+
+            /* Experience */
+            .exp-grid { grid-template-columns: 1fr !important; }
+            .exp-inner { grid-template-columns: 1fr !important; }
+            .timeline { grid-template-columns: 1fr !important; }
+
+            /* Projects */
+            .projects-grid { grid-template-columns: 1fr !important; }
+            .proj-grid { grid-template-columns: 1fr !important; }
+
+            /* About */
+            .about-grid { grid-template-columns: 1fr !important; }
+            .games-grid { grid-template-columns: 1fr 1fr !important; }
+
+            /* Contact */
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .contact-cards { grid-template-columns: 1fr !important; }
+
+            /* General */
+            .section-badge { font-size: 0.7rem; }
+            .terminal-body { font-size: 0.75rem !important; padding: 1rem !important; }
+            .page-content { padding-top: 0; }
+
+            /* Video */
+            #bgVideo { object-position: center center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="phonebg.mp4" type="video/mp4"></video>
+<div id="bgOverlay"></div>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="page-hero">
+        <div class="section-badge">Portfolio</div>
+        <h1>Featured Projects</h1>
+        <p class="section-description">Production-ready applications showcasing modern development practices and scalable architecture.</p>
+    </div>
+
+    <section class="projects-section">
+        <div class="projects-inner">
+
+            <!-- PipelineForge - Under Construction -->
+            <div class="proj-card glass-card uc">
+                <div class="uc-badge"><span class="hammer-icon">🔨</span> Building in Progress</div>
+                <div class="proj-header">
+                    <div>
+                        <div class="proj-title">PipelineForge</div>
+                        <div class="proj-date">Active Development · 2026</div>
+                    </div>
+                    <div class="proj-icon"><i class="fas fa-cogs"></i></div>
+                </div>
+                <p class="proj-desc">
+                    Enterprise-grade async task processing platform with microservices architecture, full CI/CD automation,
+                    and AWS infrastructure provisioned via Terraform. Features distributed job processing with SQS,
+                    ECS Fargate containerization, real-time CloudWatch monitoring, and automated scaling.
+                </p>
+                <div class="progress-wrap">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-info"><span>Development Progress</span><span class="progress-pct">70%</span></div>
+                </div>
+                <p class="launch-note"><span class="rocket-float">🚀</span> Expected launch: Q2 2026 · Live demo coming soon</p>
+                <div class="proj-tech">
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" class="tech-logo"> Java</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Boot</div>
+                    <div class="tech-tag"><img src="https://icon.icepanel.io/Technology/svg/GitHub-Actions.svg" class="tech-logo"> GitHub Actions</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="tech-logo"> Docker</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" class="tech-logo"> Terraform</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="tech-logo"> AWS</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo"> MySQL</div>
+                </div>
+                <div class="proj-links">
+                    <a href="https://github.com/Sumeet-Y1/PipeLine-Forage" target="_blank" class="proj-link"><i class="fab fa-github"></i> View Code</a>
+                    <a href="https://documentation-underconstruction.netlify.app/" target="_blank" class="proj-link outline"><i class="fas fa-hammer"></i> Documentation</a>
+                </div>
+            </div>
+
+            <!-- ProdPulse.AI -->
+            <div class="proj-card glass-card">
+                <div class="proj-header">
+                    <div>
+                        <div class="proj-title">ProdPulse.AI</div>
+                        <div class="proj-date">January 2026</div>
+                    </div>
+                    <div class="proj-icon"><i class="fas fa-brain"></i></div>
+                </div>
+                <p class="proj-desc">
+                    AI-powered backend service that analyzes production error logs using Groq's LLaMA 3.3-70B model. Features IP-based rate limiting, comprehensive error handling with MySQL history tracking, automatic severity classification, and CORS-enabled REST API deployed on Render for fast response times.
+                </p>
+                <div class="proj-tech">
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Boot</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring AI</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="tech-logo"> AWS</div>
+                    <div class="tech-tag"><i class="fas fa-brain"></i> Groq API</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo"> MySQL</div>
+                    <div class="tech-tag"><i class="fas fa-shield-alt"></i> Rate Limiting</div>
+                </div>
+                <div class="proj-links">
+                    <a href="https://prodpulse-ai-1-t6n5.onrender.com" target="_blank" class="proj-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/Sumeet-Y1/ProdPulse.Ai" target="_blank" class="proj-link outline"><i class="fab fa-github"></i> View Code</a>
+                </div>
+            </div>
+
+            <!-- AureumPicks -->
+            <div class="proj-card glass-card">
+                <div class="proj-header">
+                    <div>
+                        <div class="proj-title">AureumPicks</div>
+                        <div class="proj-date">November 2025</div>
+                    </div>
+                    <div class="proj-icon"><i class="fas fa-shopping-cart"></i></div>
+                </div>
+                <p class="proj-desc">
+                    Premium e-commerce platform featuring JWT authentication, email OTP verification via Brevo API, complete shopping cart management, and secure payment processing. Built with modern security best practices.
+                </p>
+                <div class="proj-tech">
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Boot</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Security</div>
+                    <div class="tech-tag"><i class="fas fa-key"></i> JWT</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo"> MySQL</div>
+                    <div class="tech-tag"><i class="fas fa-envelope"></i> Brevo API</div>
+                </div>
+                <div class="proj-links">
+                    <a href="https://aureumpicks.onrender.com/" target="_blank" class="proj-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/Sumeet-Y1/ecommerce--fullstack" target="_blank" class="proj-link outline"><i class="fab fa-github"></i> View Code</a>
+                </div>
+            </div>
+
+            <!-- Edapt -->
+            <div class="proj-card glass-card">
+                <div class="proj-header">
+                    <div>
+                        <div class="proj-title">Edapt</div>
+                        <div class="proj-date">October 2025</div>
+                    </div>
+                    <div class="proj-icon"><i class="fas fa-users-cog"></i></div>
+                </div>
+                <p class="proj-desc">
+                    RESTful API for comprehensive student data management with full CRUD operations. Implemented layered architecture pattern for maximum maintainability and scalability.
+                </p>
+                <div class="proj-tech">
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Boot</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Data JPA</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo"> MySQL</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg" class="tech-logo"> Maven</div>
+                </div>
+                <div class="proj-links">
+                    <a href="https://student-api-springboot-algk.onrender.com/" target="_blank" class="proj-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/Sumeet-Y1/student-api-springboot" target="_blank" class="proj-link outline"><i class="fab fa-github"></i> View Code</a>
+                </div>
+            </div>
+
+            <!-- Portfolio -->
+            <div class="proj-card glass-card">
+                <div class="proj-header">
+                    <div>
+                        <div class="proj-title">Portfolio Website</div>
+                        <div class="proj-date">December 2025</div>
+                    </div>
+                    <div class="proj-icon"><i class="fas fa-laptop-code"></i></div>
+                </div>
+                <p class="proj-desc">
+                    Modern, multi-page personal portfolio showcasing projects and professional experience with smooth page transitions, a three.js particle universe background, and clean dark aesthetic.
+                </p>
+                <div class="proj-tech">
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="tech-logo"> HTML5</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="tech-logo"> CSS3</div>
+                    <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="tech-logo"> JavaScript</div>
+                </div>
+                <div class="proj-links">
+                    <a href="https://github.com/Sumeet-Y1/Portfolio" target="_blank" class="proj-link"><i class="fab fa-github"></i> View Code</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion & ☕</p></footer>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+<script src="shared.js"></script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+    <a href="home.html"       class="nav-item"><i class="fas fa-house"></i><span>Home</span></a>
+    <a href="skills.html"     class="nav-item"><i class="fas fa-code"></i><span>Skills</span></a>
+    <a href="experience.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Exp</span></a>
+    <a href="projects.html"   class="nav-item"><i class="fas fa-rocket"></i><span>Projects</span></a>
+    <a href="about.html"      class="nav-item"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="contact.html"    class="nav-item"><i class="fas fa-envelope"></i><span>Contact</span></a>
+</nav>
+
+<script>
+    // Active bottom nav
+    (function() {
+        const page = location.pathname.split('/').pop() || 'home.html';
+        document.querySelectorAll('.nav-item').forEach(a => {
+            if (a.getAttribute('href') === page) a.classList.add('active');
+        });
+    })();
+</script>
+
+</body>
+</html>

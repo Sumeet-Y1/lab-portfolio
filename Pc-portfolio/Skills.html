@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Sumeet Yadav</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero {
+            padding: 9rem 5% 4rem;
+            text-align: center;
+        }
+
+        .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+
+        .skills-section { padding: 2rem 5% 6rem; }
+
+        .skills-inner { max-width: 1300px; margin: 0 auto; }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .skill-card { padding: 2rem; }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-icon {
+            width: 46px; height: 46px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .skill-name {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .tech-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+        /* Proficiency bar */
+        .proficiency {
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .prof-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+        }
+
+        .prof-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .prof-fill {
+            height: 100%;
+            background: var(--white);
+            border-radius: 10px;
+            width: 0;
+            transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+        }
+
+        .prof-fill.animate { width: var(--prof); }
+
+        @media (max-width: 768px) {
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.75) saturate(1.4);
+            pointer-events: none;
+        }
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="../bg.mp4" type="video/mp4"></video>
+<div id="bgOverlay"></div>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="page-hero">
+        <div class="section-badge">Technical Expertise</div>
+        <h1>Tech Stack</h1>
+        <p class="section-description">
+            Modern technologies I use to build scalable, production-ready applications.
+        </p>
+    </div>
+
+    <section class="skills-section">
+        <div class="skills-inner">
+            <div class="skills-grid">
+
+                <!-- Backend -->
+                <div class="skill-card glass-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-server"></i></div>
+                        <div class="skill-name">Backend</div>
+                    </div>
+                    <div class="tech-list">
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" class="tech-logo"> Java</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Boot</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Security</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring AI</div>
+                        <div class="tech-tag"><i class="fas fa-key"></i> JWT</div>
+                        <div class="tech-tag"><i class="fas fa-network-wired"></i> REST APIs</div>
+                    </div>
+                    <div class="proficiency">
+                        <div class="prof-label">Proficiency</div>
+                        <div class="prof-bar"><div class="prof-fill" style="--prof:88%"></div></div>
+                    </div>
+                </div>
+
+                <!-- Database -->
+                <div class="skill-card glass-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-database"></i></div>
+                        <div class="skill-name">Database</div>
+                    </div>
+                    <div class="tech-list">
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo"> MySQL</div>
+                        <div class="tech-tag"><i class="fas fa-table"></i> SQL</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="tech-logo"> Spring Data JPA</div>
+                    </div>
+                    <div class="proficiency">
+                        <div class="prof-label">Proficiency</div>
+                        <div class="prof-bar"><div class="prof-fill" style="--prof:80%"></div></div>
+                    </div>
+                </div>
+
+                <!-- Cloud & DevOps -->
+                <div class="skill-card glass-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-cloud"></i></div>
+                        <div class="skill-name">Cloud & DevOps</div>
+                    </div>
+                    <div class="tech-list">
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="tech-logo"> AWS</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="tech-logo"> Docker</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" class="tech-logo"> Nginx</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="tech-logo"> Linux</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" class="tech-logo"> Terraform</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="tech-logo"> GitHub</div>
+                    </div>
+                    <div class="proficiency">
+                        <div class="prof-label">Proficiency</div>
+                        <div class="prof-bar"><div class="prof-fill" style="--prof:75%"></div></div>
+                    </div>
+                </div>
+
+                <!-- Frontend -->
+                <div class="skill-card glass-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-code"></i></div>
+                        <div class="skill-name">Frontend</div>
+                    </div>
+                    <div class="tech-list">
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="tech-logo"> HTML5</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="tech-logo"> CSS3</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="tech-logo"> JavaScript</div>
+                    </div>
+                    <div class="proficiency">
+                        <div class="prof-label">Proficiency</div>
+                        <div class="prof-bar"><div class="prof-fill" style="--prof:65%"></div></div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="skill-card glass-card">
+                    <div class="skill-header">
+                        <div class="skill-icon"><i class="fas fa-tools"></i></div>
+                        <div class="skill-name">Tools</div>
+                    </div>
+                    <div class="tech-list">
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg" class="tech-logo"> Maven</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg" class="tech-logo"> IntelliJ</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" class="tech-logo"> Postman</div>
+                        <div class="tech-tag"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" class="tech-logo"> Jira</div>
+                        <div class="tech-tag"><img src="https://icon.icepanel.io/Technology/svg/GitHub-Actions.svg" class="tech-logo"> GitHub Actions</div>
+                    </div>
+                    <div class="proficiency">
+                        <div class="prof-label">Proficiency</div>
+                        <div class="prof-bar"><div class="prof-fill" style="--prof:82%"></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion & ☕</p></footer>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+<script src="shared.js"></script>
+<script>
+    // Animate proficiency bars on scroll
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.querySelectorAll('.prof-fill').forEach(bar => bar.classList.add('animate'));
+            }
+        });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.skill-card').forEach(c => observer.observe(c));
+</script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+</body>
+</html>

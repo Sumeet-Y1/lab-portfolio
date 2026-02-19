@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Sumeet Yadav</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .page-hero { padding: 9rem 5% 4rem; text-align: center; }
+        .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 800; line-height: 1; margin-bottom: 1rem; }
+
+        .about-section { padding: 2rem 5% 6rem; }
+        .about-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
+
+        /* Quote banner */
+        .quote-banner {
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .quote-banner::before {
+            content: '"';
+            position: absolute;
+            top: -1rem; left: 1rem;
+            font-family: var(--font-display);
+            font-size: 10rem;
+            color: rgba(255,255,255,0.04);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.8rem;
+        }
+        .quote-author {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+        .big-card { padding: 2.5rem; }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-label-icon {
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .card-label h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+        .card-desc { color: var(--gray); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1.4rem; }
+
+        /* ── GAME LIST ── */
+        .game-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        .game-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .game-item:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .game-left { display: flex; align-items: center; gap: 0.85rem; }
+
+        .game-logo-wrap {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .game-logo-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .game-name { font-weight: 600; font-size: 0.92rem; }
+        .game-platform { font-size: 0.72rem; color: var(--gray); margin-top: 0.1rem; }
+
+        .game-badge {
+            font-family: var(--font-mono);
+            font-size: 0.67rem;
+            padding: 0.18rem 0.55rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: var(--gray);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ── MUSIC ── */
+        .now-playing-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem 0.9rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            margin-bottom: 0.85rem;
+        }
+        .np-dot {
+            width: 8px; height: 8px;
+            background: #ff2020;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-red {
+            0%,100%{ box-shadow: 0 0 4px rgba(255,32,32,0.4); }
+            50%    { box-shadow: 0 0 12px rgba(255,32,32,0.8); }
+        }
+        .np-bars { display: flex; align-items: flex-end; gap: 2px; height: 15px; }
+        .np-bar {
+            width: 3px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 2px;
+            animation: bar-dance 0.8s ease-in-out infinite alternate;
+        }
+        .np-bar:nth-child(1){ height: 55%; animation-delay:0s }
+        .np-bar:nth-child(2){ height: 100%; animation-delay:0.15s }
+        .np-bar:nth-child(3){ height: 40%; animation-delay:0.3s }
+        .np-bar:nth-child(4){ height: 75%; animation-delay:0.08s }
+        @keyframes bar-dance { from{transform:scaleY(0.3)} to{transform:scaleY(1)} }
+        .np-text { font-size: 0.8rem; color: var(--gray); }
+        .np-text strong { color: var(--white); }
+
+        .music-player-wrap {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 16/9;
+            margin-bottom: 1rem;
+        }
+        .music-player-wrap iframe {
+            width: 100%; height: 100%;
+            border: none; display: block;
+        }
+
+        .vibe-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+        .vibe-tag {
+            padding: 0.3rem 0.75rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 50px;
+            font-size: 0.77rem;
+            color: var(--gray);
+        }
+
+        /* Mindset */
+        .mindset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .mindset-item {
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+        }
+        .mindset-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; }
+        .mindset-item h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .mindset-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+
+        /* CTA */
+        .cta-card { padding: 3rem; text-align: center; }
+        .cta-card h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+        .cta-card p { color: var(--gray); margin-bottom: 2rem; font-size: 1rem; line-height: 1.7; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        @media (max-width: 540px) { .mindset-grid { grid-template-columns: 1fr; } }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            object-position: center center;
+            filter: brightness(0.75) saturate(1.4);
+            pointer-events: none;
+        }
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0% 100%, rgba(0,5,20,0.6) 0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="../bg.mp4" type="video/mp4"></video>
+<div id="bgOverlay"></div>
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="page-hero">
+        <div class="section-badge">The Human Behind the Code</div>
+        <h1>About Me</h1>
+        <p class="section-description">
+            Not just a backend dev. A gamer, a beat listener, and someone who builds things that actually work.
+        </p>
+    </div>
+
+    <section class="about-section">
+        <div class="about-inner">
+
+            <!-- Quote -->
+            <div class="quote-banner glass-card">
+                <div class="quote-text">Chasing the Horizon</div>
+            </div>
+
+            <!-- Gaming + Music side by side -->
+            <div class="two-col">
+
+                <!-- GAMING -->
+                <div class="big-card glass-card">
+                    <div class="card-label">
+                        <div class="card-label-icon">🎮</div>
+                        <h3>Gaming</h3>
+                    </div>
+                    <p class="card-desc">
+                        When I'm not writing Java, I'm grinding ranked or exploring open worlds.
+                        Gaming taught me strategy, patience, and clutch decision-making.
+                    </p>
+                    <div class="game-list">
+
+                        <!-- Clash of Clans -->
+                        <div class="game-item">
+                            <div class="game-left">
+                                <div class="game-logo-wrap">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.xLZUPyz7oMtmfLc_fR09zgHaHa?cb=defcachec2&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Clash of Clans">
+                                </div>
+                                <div>
+                                    <div class="game-name">Clash of Clans</div>
+                                    <div class="game-platform">📱 Mobile</div>
+                                </div>
+                            </div>
+                            <span class="game-badge">OG since day 1</span>
+                        </div>
+
+                        <!-- Valorant -->
+                        <div class="game-item">
+                            <div class="game-left">
+                                <div class="game-logo-wrap" style="background:#ff4655;padding:6px;">
+                                    <img src="https://th.bing.com/th/id/OIP.HRmJ30646Uq5_w74SRBbNgHaHa?o=7&cb=defcachec2rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Valorant">
+                                </div>
+                                <div>
+                                    <div class="game-name">Valorant</div>
+                                    <div class="game-platform">🖥️ PC</div>
+                                </div>
+                            </div>
+                            <span class="game-badge">Tactical FPS</span>
+                        </div>
+
+                        <!-- CS2 -->
+                        <div class="game-item">
+                            <div class="game-left">
+                                <div class="game-logo-wrap" style="background:#1b2838;padding:4px;">
+                                    <img src="https://th.bing.com/th/id/OIP.beLc4wCZZWBZs11o0-QqDwHaHa?o=7&cb=defcachec2rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="CS2">
+                                </div>
+                                <div>
+                                    <div class="game-name">Counter-Strike 2</div>
+                                    <div class="game-platform">🖥️ PC</div>
+                                </div>
+                            </div>
+                            <span class="game-badge">The classic</span>
+                        </div>
+
+                        <!-- RDR2 -->
+                        <div class="game-item">
+                            <div class="game-left">
+                                <div class="game-logo-wrap" style="background:#1a0800;">
+                                    <img src="https://pngimg.com/uploads/red_dead_redemption/red_dead_redemption_PNG20.png" alt="Red Dead Redemption 2">
+                                </div>
+                                <div>
+                                    <div class="game-name">Red Dead Redemption 2</div>
+                                    <div class="game-platform">🖥️ PC</div>
+                                </div>
+                            </div>
+                            <span class="game-badge">Masterpiece 🤠</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- MUSIC -->
+                <div class="big-card glass-card">
+                    <div class="card-label">
+                        <div class="card-label-icon">🎵</div>
+                        <h3>Music</h3>
+                    </div>
+                    <p class="card-desc">
+                        Ambient is my coding fuel. Those mellow beats lock me into flow state perfect for
+                        deep work, late-night builds, or just vibing between commits.
+                    </p>
+
+                    <div class="now-playing-bar">
+                        <div class="np-dot"></div>
+                        <div class="np-bars">
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                            <div class="np-bar"></div>
+                        </div>
+                        <div class="np-text"><strong>What I code to</strong> · hit play 👇</div>
+                    </div>
+
+                    <!-- Embedded YouTube video -->
+                    <div class="music-player-wrap">
+                        <iframe
+                                src="https://www.youtube.com/embed/_9bw_VtMUGA?rel=0&modestbranding=1&color=white&iv_load_policy=3"
+                                title="Lo-fi music — Sumeet's coding playlist"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div class="vibe-tags">
+                        <span class="vibe-tag">☁️ Chill ambient</span>
+                        <span class="vibe-tag">🎹 beats</span>
+                        <span class="vibe-tag">🌧️ Rainy day vibes</span>
+                        <span class="vibe-tag">🌙 Late night coding</span>
+                        <span class="vibe-tag">🍵 Coffee &amp; keys</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dev Mindset -->
+            <div class="big-card glass-card">
+                <div class="card-label">
+                    <div class="card-label-icon">🧠</div>
+                    <h3>How I Think &amp; Work</h3>
+                </div>
+                <div class="mindset-grid">
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">🏗️</div>
+                        <h4>Architecture First</h4>
+                        <p>I think about how things scale before writing a single line. Bad architecture is a debt that always comes due.</p>
+                    </div>
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">🔐</div>
+                        <h4>Security Isn't Optional</h4>
+                        <p>JWT, Spring Security, rate limiting I treat these as requirements, not nice-to-haves.</p>
+                    </div>
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">🚀</div>
+                        <h4>Ship It</h4>
+                        <p>Perfection is the enemy of done. I build, deploy, learn, and iterate. Real users > local demos.</p>
+                    </div>
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">☕</div>
+                        <h4>Caffeine Powered</h4>
+                        <p>Coffee, beats, and a dark IDE. That's the setup. Some of my best code was written past midnight.</p>
+                    </div>
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">📚</div>
+                        <h4>Always Learning</h4>
+                        <p>Every Forage sim, every side project, every bug is a lesson. Stagnation is not an option.</p>
+                    </div>
+                    <div class="mindset-item">
+                        <div class="mindset-emoji">🎯</div>
+                        <h4>Horizon Chaser</h4>
+                        <p>There's always a next goal. More complex systems, better code, bigger impact. Keep moving forward.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-card glass-card">
+                <h2>Let's Build Something</h2>
+                <p>
+                    Now you know the person behind the code. Backend dev by day, gamer by night,
+                    beats listener always. If you're looking for someone who takes their craft seriously
+                    and actually ships - I'm your guy.
+                </p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary"><i class="fas fa-envelope"></i> Get In Touch</a>
+                    <a href="projects.html" class="btn btn-secondary"><i class="fas fa-folder-open"></i> See My Work</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion &amp; ☕</p></footer>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+<script src="shared.js"></script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumeet Yadav — Backend Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        /* ── VIDEO BACKGROUND ── */
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            filter: brightness(0.75) saturate(1.4);
+            object-position: center center;
+            pointer-events: none;
+        }
+
+        /* Dark gradient overlay — makes it look like a shader not a video */
+        #bgOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 50% 0%,   rgba(10,0,30,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse at 0%  100%, rgba(0,5,20,0.6)  0%, transparent 60%),
+                radial-gradient(ellipse at 100% 80%, rgba(5,0,25,0.5)  0%, transparent 60%),
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+        /* Subtle noise grain texture over video — kills the "video" feel */
+        #bgOverlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 5% 5rem;
+        }
+        .hero-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            font-size: 0.82rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s ease both;
+        }
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 7vw, 6.5rem);
+            font-weight: 800;
+            line-height: 0.95;
+            margin-bottom: 0.8rem;
+            animation: fadeUp 0.7s 0.1s ease both;
+        }
+        .hero-role {
+            font-family: var(--font-mono);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s 0.2s ease both;
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px; height: 1.2em;
+            background: var(--white);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--gray);
+            line-height: 1.8;
+            max-width: 520px;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s 0.3s ease both;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.7s 0.4s ease both;
+        }
+
+        /* Terminal */
+        .hero-visual { animation: fadeUp 0.7s 0.2s ease both; }
+        .terminal {
+            background: rgba(3,3,12,0.72);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(28px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        }
+        .terminal-bar {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .t-dot.red    { background: #ff5f57; }
+        .t-dot.yellow { background: #ffbd2e; }
+        .t-dot.green  { background: #28ca42; }
+        .terminal-title { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gray); margin-left: auto; }
+        .terminal-body  { padding: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; }
+        .t-line    { display: flex; align-items: baseline; gap: 0.5rem; }
+        .t-prompt  { color: rgba(255,255,255,0.2); }
+        .t-cmd     { color: var(--white); }
+        .t-key     { color: var(--gray); }
+        .t-val     { color: rgba(255,255,255,0.85); }
+        .t-green   { color: #28ca42; }
+        .t-yellow  { color: #ffbd2e; }
+        .t-blue    { color: #79b8ff; }
+        .t-comment { color: rgba(255,255,255,0.22); }
+
+        /* Stats */
+        .stats-section { padding: 1rem 5% 6rem; }
+        .stats-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+        .stat-card  { padding: 2rem; text-align: center; }
+        .stat-num   { font-family: var(--font-mono); font-size: 2.8rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .stat-label { font-size: 0.85rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* About */
+        .about-section { padding: 5rem 5%; border-top: 1px solid var(--border); }
+        .about-inner { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+        .about-text h2 { font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.1; }
+        .about-text p  { color: var(--gray); line-height: 1.9; margin-bottom: 1.2rem; font-size: 1rem; }
+        .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+        .highlight-item { padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .highlight-icon { width: 42px; height: 42px; background: rgba(255,255,255,0.07); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .highlight-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .highlight-item p  { font-size: 0.85rem; color: var(--gray); margin: 0; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+        @media (max-width: 1024px) {
+            .hero-inner  { grid-template-columns: 1fr; gap: 2.5rem; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
+            .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+        @media (max-width: 480px) {
+            .stats-inner { grid-template-columns: 1fr 1fr; }
+            .terminal-body { font-size: 0.75rem; padding: 1rem; }
+        }
+
+        /* Video loader */
+        #vid-loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease;
+        }
+        #vid-loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .vid-loader-dot {
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+        .vid-loader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .vid-loader-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes dotPulse {
+            0%,100% { transform: scale(0.6); opacity: 0.3; }
+            50%      { transform: scale(1.2); opacity: 1;   }
+        }
+
+
+        /* ── MOBILE RESPONSIVE (phone-portfolio only) ── */
+        :root { --bottom-nav-h: 64px; }
+
+        body { padding-bottom: var(--bottom-nav-h); }
+
+        /* Hide top nav on mobile */
+        nav:not(.bottom-nav) { display: none !important; }
+
+        /* Bottom nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--bottom-nav-h);
+            background: rgba(5,5,15,0.92);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 100;
+            padding: 0 0.5rem;
+        }
+        .nav-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.2rem;
+            padding: 0.5rem 0.8rem;
+            text-decoration: none;
+            color: rgba(255,255,255,0.35);
+            transition: color 0.2s;
+            border-radius: 12px; min-width: 48px;
+        }
+        .nav-item.active { color: #fff; }
+        .nav-item i { font-size: 1.1rem; }
+        .nav-item span { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+        /* Stack all grids to single column */
+        @media (max-width: 768px) {
+            .hero { padding: 5rem 5% 3rem !important; }
+            .hero-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .hero-name { font-size: clamp(3rem, 15vw, 5rem) !important; }
+            .hero-buttons { flex-direction: column !important; }
+            .hero-buttons .btn { width: 100%; justify-content: center; }
+
+            .stats-inner { grid-template-columns: 1fr 1fr !important; gap: 0.8rem !important; }
+            .stat-num { font-size: 2rem !important; }
+
+            .about-inner { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .about-text h2 { font-size: 2rem !important; }
+
+            /* Skills */
+            .skills-grid { grid-template-columns: 1fr !important; }
+            .skills-inner { grid-template-columns: 1fr !important; }
+
+            /* Experience */
+            .exp-grid { grid-template-columns: 1fr !important; }
+            .exp-inner { grid-template-columns: 1fr !important; }
+            .timeline { grid-template-columns: 1fr !important; }
+
+            /* Projects */
+            .projects-grid { grid-template-columns: 1fr !important; }
+            .proj-grid { grid-template-columns: 1fr !important; }
+
+            /* About */
+            .about-grid { grid-template-columns: 1fr !important; }
+            .games-grid { grid-template-columns: 1fr 1fr !important; }
+
+            /* Contact */
+            .contact-grid { grid-template-columns: 1fr !important; }
+            .contact-cards { grid-template-columns: 1fr !important; }
+
+            /* General */
+            .section-badge { font-size: 0.7rem; }
+            .terminal-body { font-size: 0.75rem !important; padding: 1rem !important; }
+            .page-content { padding-top: 0; }
+
+            /* Video */
+            #bgVideo { object-position: center center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- VIDEO BG — user sees nothing, just the vibe -->
+
+<div id="vid-loader">
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+    <div class="vid-loader-dot"></div>
+</div>
+
+<video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="phonebg.mp4" type="video/mp4">
+</video>
+
+<!-- Overlay to make it feel like a shader not a video -->
+<div id="bgOverlay"></div>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">&lt;SY/&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-toggle" id="mobileToggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="page-content">
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-left">
+                <div class="hero-badge">
+                    <i class="fas fa-circle" style="font-size:0.5rem;color:#28ca42"></i>
+                    Open to opportunities
+                </div>
+                <h1 class="hero-name">Sumeet<br>Yadav</h1>
+                <p class="hero-role">Backend Developer<span class="cursor"></span></p>
+                <p class="hero-desc">
+                    Building production-ready REST APIs with Spring Boot and AWS.
+                    Experienced in JWT authentication, event-driven microservices,
+                    and cloud-native architectures that actually solve real-world problems.
+                </p>
+                <div class="hero-buttons">
+                    <a href="projects.html" class="btn btn-primary"><i class="fas fa-rocket"></i> View Projects</a>
+                    <a href="contact.html"  class="btn btn-secondary"><i class="fas fa-envelope"></i> Get In Touch</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="terminal">
+                    <div class="terminal-bar">
+                        <div class="t-dot red"></div>
+                        <div class="t-dot yellow"></div>
+                        <div class="t-dot green"></div>
+                        <span class="terminal-title">sumeet.json</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">cat sumeet.json</span></div>
+                        <div style="margin-top:0.5rem">
+                            <div class="t-line"><span class="t-comment">{</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"name"</span><span class="t-prompt">:</span> <span class="t-val">"Sumeet Yadav"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"role"</span><span class="t-prompt">:</span> <span class="t-val">"Backend Developer"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"location"</span><span class="t-prompt">:</span> <span class="t-val">"Mumbai, India 🇮🇳"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"stack"</span><span class="t-prompt">:</span> <span class="t-blue">["Java", "Spring", "AWS"]</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"projects"</span><span class="t-prompt">:</span> <span class="t-yellow">3</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"simulations"</span><span class="t-prompt">:</span> <span class="t-yellow">5</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"caffeine"</span><span class="t-prompt">:</span> <span class="t-green">"critical"</span><span class="t-comment">,</span></div>
+                            <div class="t-line" style="padding-left:1.2rem"><span class="t-key">"available"</span><span class="t-prompt">:</span> <span class="t-green">true</span></div>
+                            <div class="t-line"><span class="t-comment">}</span></div>
+                        </div>
+                        <div class="t-line" style="margin-top:0.8rem"><span class="t-green">✓</span> <span class="t-comment">Ready to ship.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-inner">
+            <div class="stat-card glass-card"><div class="stat-num">3+</div><div class="stat-label">Projects Shipped</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">5</div><div class="stat-label">Job Simulations</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">15+</div><div class="stat-label">Technologies</div></div>
+            <div class="stat-card glass-card"><div class="stat-num">∞</div><div class="stat-label">Cups of Coffee</div></div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-inner">
+            <div class="about-text">
+                <div class="section-badge">Who I Am</div>
+                <h2>Backend dev who<br>actually ships stuff</h2>
+                <p>I'm a self-driven backend developer based in Mumbai, building scalable APIs and cloud-native systems. I obsess over clean architecture, proper security, and code that doesn't break at 2am.</p>
+                <p>Right now I'm deep into microservices, AWS infrastructure, and always learning what's next. When I'm not coding, I'm gaming or vibing to ambient beats.</p>
+                <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+                    <a href="projects.html" class="btn btn-primary"  style="font-size:0.9rem;padding:0.7rem 1.4rem"><i class="fas fa-folder-open"></i> My Work</a>
+                    <a href="about.html"    class="btn btn-secondary" style="font-size:0.9rem;padding:0.7rem 1.4rem"><i class="fas fa-user"></i> More About Me</a>
+                </div>
+            </div>
+            <div class="about-highlights">
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-server"></i></div>
+                    <div><h4>Backend Architecture</h4><p>Spring Boot microservices, REST APIs, JWT auth — built for scale.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-cloud"></i></div>
+                    <div><h4>Cloud & DevOps</h4><p>AWS, Docker, Terraform, CI/CD pipelines that actually work.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-database"></i></div>
+                    <div><h4>Data Layer</h4><p>MySQL, Spring Data JPA, schema design for real-world workloads.</p></div>
+                </div>
+                <div class="highlight-item glass-card">
+                    <div class="highlight-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div><h4>Security First</h4><p>Spring Security, OAuth2, rate limiting — not an afterthought.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>© 2026 <span>Sumeet Yadav</span>. Built with passion & ☕</p></footer>
+</div>
+
+<div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
+
+<script src="shared.js"></script>
+<script>
+    // Override universe canvas — no Three.js needed, video handles the bg
+    // Just keep nav + scroll top
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === 'home.html') a.classList.add('active');
+    });
+
+    // Prevent right click on video — extra stealth
+    document.getElementById('bgVideo').addEventListener('contextmenu', e => e.preventDefault());
+</script>
+
+<script>
+    (function() {
+        const loader = document.getElementById('vid-loader');
+        const video  = document.getElementById('bgVideo');
+        if (!loader || !video) return;
+        function hide() {
+            loader.classList.add('fade-out');
+            setTimeout(() => loader.remove(), 700);
+        }
+        video.addEventListener('canplaythrough', hide, { once: true });
+        // Fallback — hide after 3s no matter what
+        setTimeout(hide, 3000);
+    })();
+</script>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+    <a href="home.html"       class="nav-item"><i class="fas fa-house"></i><span>Home</span></a>
+    <a href="skills.html"     class="nav-item"><i class="fas fa-code"></i><span>Skills</span></a>
+    <a href="experience.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Exp</span></a>
+    <a href="projects.html"   class="nav-item"><i class="fas fa-rocket"></i><span>Projects</span></a>
+    <a href="about.html"      class="nav-item"><i class="fas fa-user"></i><span>About</span></a>
+    <a href="contact.html"    class="nav-item"><i class="fas fa-envelope"></i><span>Contact</span></a>
+</nav>
+
+<script>
+    // Active bottom nav
+    (function() {
+        const page = location.pathname.split('/').pop() || 'home.html';
+        document.querySelectorAll('.nav-item').forEach(a => {
+            if (a.getAttribute('href') === page) a.classList.add('active');
+        });
+    })();
+</script>
+
+</body>
+</html>
